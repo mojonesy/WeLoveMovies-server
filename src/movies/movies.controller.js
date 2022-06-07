@@ -29,10 +29,15 @@ function read(req, res) {
     res.json({ data });
 }
 
-
+async function theatersWithMovie(req, res) {
+    const movieId = res.locals.movie.movie_id;
+    const data = await service.theatersPlayingMovie(movieId);
+    res.json({ data });
+}
 
 module.exports = {
     list: asyncErrorBoundary(list),
     movieIsShowing: asyncErrorBoundary(movieIsShowing),
     read: [asyncErrorBoundary(movieExists), read],
+    theatersWithMovie: [asyncErrorBoundary(movieExists), asyncErrorBoundary(theatersWithMovie)],
 }
