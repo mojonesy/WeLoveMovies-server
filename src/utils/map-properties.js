@@ -1,7 +1,7 @@
 const lodash = require("lodash");
 
 /**
- * Creates af function to map the properties of an object to different properties on a new object.
+ * Creates a function to map the properties of an object to different properties on a new object.
  * @param configuration {Object}
  *  each key is the source property and the value is either a "." delimited string or an array representing the path to the new property.
  * @returns {(function(*=): (*))|*}
