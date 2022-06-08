@@ -37,9 +37,29 @@ async function theatersWithMovie(req, res) {
 
 async function reviewsByMovie(req, res) {
     const movieId = res.locals.movie.movie_id;
-    const data = await service.reviewAndCriticsOfMovie(movieId);
+    const reviews = await service.readReviewsAndCritics(movieId);
+    const reviewValues = Object.values(reviews);
+
+    const data = reviewValues.map((
+        { review_id, content, score, critic_id, movie_id, preferred_name, surname, organization_name }) => {
+            return ({
+                review_id,
+                content,
+                score,
+                critic_id,
+                movie_id,
+                critic: {
+                    critic_id,
+                    preferred_name,
+                    surname,
+                    organization_name,
+                }
+            });
+        });
+
     res.json({ data });
 }
+
 
 module.exports = {
     list: asyncErrorBoundary(list),
