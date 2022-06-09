@@ -14,6 +14,7 @@ const logger = require("./config/logger");
 
 const app = express();
 app.use(logger);
+app.use(express.json());
 
 // Routes //
 app.use("/movies", moviesRouter);
