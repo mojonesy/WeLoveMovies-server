@@ -2,19 +2,6 @@ const service = require("./movies.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 
-async function list(req, res) {
-    const data = await service.list();
-    res.json({ data });
-}
-// FIX //
-async function movieIsShowing(req, res, next) {
-    const isShowing = (req.query.is_showing === 'true');
-    if (isShowing) {
-        const data = await service.moviesShowing();
-        res.json({ data });
-    }
-}
-
 async function movieExists(req, res, next) {
     const movie = await service.read(req.params.movieId);
     if (movie) {
@@ -37,33 +24,25 @@ async function theatersWithMovie(req, res) {
 
 async function reviewsByMovie(req, res) {
     const movieId = res.locals.movie.movie_id;
-    const reviews = await service.readReviewsAndCritics(movieId);
-    const reviewValues = Object.values(reviews);
+    const data = await service.readReviewsAndCritics(movieId);
+    res.json({ data });
+}
 
-    const data = reviewValues.map((
-        { review_id, content, score, critic_id, movie_id, preferred_name, surname, organization_name }) => {
-            return ({
-                review_id,
-                content,
-                score,
-                critic_id,
-                movie_id,
-                critic: {
-                    critic_id,
-                    preferred_name,
-                    surname,
-                    organization_name,
-                }
-            });
-        });
-
+async function list(req, res) {
+    const movieShowing = req.query.is_showing;
+    if(movieShowing === 'true') {
+      const data = await service.moviesShowing();
+      res.json({ data });
+    }
+    const data = await service.list();
     res.json({ data });
 }
 
 
+
+
 module.exports = {
     list: asyncErrorBoundary(list),
-    movieIsShowing: asyncErrorBoundary(movieIsShowing),
     read: [asyncErrorBoundary(movieExists), read],
     reviewsByMovie: [asyncErrorBoundary(movieExists), asyncErrorBoundary(reviewsByMovie)],
     theatersWithMovie: [asyncErrorBoundary(movieExists), asyncErrorBoundary(theatersWithMovie)],
