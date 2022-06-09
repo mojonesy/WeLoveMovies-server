@@ -8,8 +8,8 @@ router.route("/:movieId/reviews").get(controller.reviewsByMovie).all(methodNotAl
 router.route("/:movieId/theaters").get(controller.theatersWithMovie).all(methodNotAllowed);
 
 router.route("/:movieId").get(controller.read).all(methodNotAllowed);
-// Fix movieIsShowing //
-router.route("/").get(controller.list).get(controller.movieIsShowing).all(methodNotAllowed);
+
+router.route("/").get(controller.list).all(methodNotAllowed);
 
 
 module.exports = router;
