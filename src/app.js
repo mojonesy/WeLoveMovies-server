@@ -9,8 +9,11 @@ const moviesRouter = require("./movies/movies.router");
 const theatersRouter = require("./theaters/theaters.router");
 const reviewsRouter = require("./reviews/reviews.router");
 
+// Logger //
+const logger = require("./config/logger");
 
 const app = express();
+app.use(logger);
 
 // Routes //
 app.use("/movies", moviesRouter);
