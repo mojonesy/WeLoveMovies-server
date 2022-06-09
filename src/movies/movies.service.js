@@ -1,17 +1,25 @@
-const { select } = require("../db/connection");
 const knex = require("../db/connection");
+const reduceProperties = require("../utils/reduce-properties");
+
+const addCriticCategory = reduceProperties("review_id", {
+  critic_id: ["critic", "critic_id"],
+  preferred_name: ["critic", "preferred_name"],
+  surname: ["critic", "surname"],
+  organization_name: ["critic", "organization_name"],
+});
 
 
 function list() {
     return knex("movies").select("*");
 }
 
-// FIX //
 function moviesShowing() {
     return knex("movies as m")
         .join("movies_theaters as mt", "m.movie_id", "mt.movie_id")
         .select("m.*")
-        .where({"mt.is_showing": true });
+        .where({"mt.is_showing": true })
+        .distinct("m.movie_id")
+        .orderBy("m.movie_id");
 }
 
 function read(movieId) {
@@ -31,7 +39,8 @@ function readReviewsAndCritics(movieId) {
         .join("reviews as r", "m.movie_id", "r.movie_id")
         .join("critics as c", "c.critic_id", "r.critic_id")
         .select("r.*", "c.*")
-        .where({ "m.movie_id": movieId });
+        .where({ "m.movie_id": movieId })
+        .then(addCriticCategory);
 }
 
 
