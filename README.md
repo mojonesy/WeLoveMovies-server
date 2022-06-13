@@ -1,7 +1,7 @@
 # WeLoveMovies-server
 A backend development capstone project, working off of my studies with [Thinkful](https://www.thinkful.com/). Practice in building a complex server and accessing data through a database. 
 
-I followed an inside-out development workflow, setting up the database first and then proceeding to create the routes in the application tier. I created and ran migrations using Knex to set up tables, then seeded the database accordingly. `cors` is implemented for the entire application.
+I followed an inside-out development workflow, setting up the database first and then proceeding to create the routes, handlers, and middleware in the application tier. I created and ran migrations using Knex to set up tables, then seeded the database accordingly. `cors` is implemented for the entire application.
 - Languages used include Node, Express, Knex, PostgreSQL.
 - Tools used included [ElephantSQL](https://www.elephantsql.com/) for the database instance, [DBeaver](https://dbeaver.io/) for the database user interface, and [Postman](https://www.postman.com/) for HTTP request testing. I also used [pino-http](https://www.npmjs.com/package/pino-http) to implement logging and trace errors throughout my development process.
 
