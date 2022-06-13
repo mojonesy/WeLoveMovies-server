@@ -14,28 +14,24 @@ async function movieExists(req, res, next) {
 
 // Read movie stored in locals //
 function read(req, res) {
-    const { movie: data } = res.locals;
-    res.json({ data });
+    res.json({ data: res.locals.movie });
 }
 
 // Return theaters playing given movie //
 async function theatersWithMovie(req, res) {
-    const movieId = res.locals.movie.movie_id;
-    const data = await service.theatersPlayingMovie(movieId);
+    const data = await service.theatersPlayingMovie(res.locals.movie.movie_id);
     res.json({ data });
 }
 
 // Return reviews & critics from given movie //
 async function reviewsByMovie(req, res) {
-    const movieId = res.locals.movie.movie_id;
-    const data = await service.readReviewsAndCritics(movieId);
+    const data = await service.readReviewsAndCritics(res.locals.movie.movie_id);
     res.json({ data });
 }
 
 // List movies where 'is_showing=true' //
 async function list(req, res) {
-    const movieShowing = req.query.is_showing;
-    if(movieShowing === 'true') {
+    if(req.query.is_showing === 'true') {
       const data = await service.moviesShowing();
       res.json({ data });
     }
