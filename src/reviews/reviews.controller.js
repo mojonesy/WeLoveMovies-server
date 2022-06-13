@@ -1,7 +1,7 @@
 const service = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
-
+// Check if request body contains data //
 function hasData(req, res, next) {
     if (req.body.data) {
         return next();
@@ -17,6 +17,7 @@ const VALID_PROPERTIES = [
     "movie_id"
 ];
 
+// Check that request body contains valid properties only //
 function hasOnlyValidProperties(req, res, next) {
   const { data = {} } = req.body;
   const invalidFields = Object.keys(data).filter(
@@ -32,6 +33,7 @@ function hasOnlyValidProperties(req, res, next) {
   next();
 }
 
+// Check that request body contains required properties //
 function hasProperties(...properties) {
     return function (req, res, next) {
       const { data = {} } = req.body;
@@ -50,6 +52,7 @@ function hasProperties(...properties) {
     };
 }
 
+// Check if given review exists //
 async function reviewExists(req, res, next) {
     const review = await service.read(req.params.reviewId);
     if (review) {
@@ -59,6 +62,7 @@ async function reviewExists(req, res, next) {
     next({ status: 404, message: "Review cannot be found."});
 }
 
+// Update review stored in locals with data in request body //
 async function update(req, res) {
     const updatedReview = {
         ...req.body.data,
@@ -66,10 +70,12 @@ async function update(req, res) {
     };
 
     await service.update(updatedReview);
+    // Attach 'critic' key with info for the updated review's critic //
     const addedCritics = await service.addCritics(res.locals.review.review_id);
     res.json({ data: addedCritics });
 }
 
+// Delete review stored in locals //
 async function destroy(req, res) {
     const { review } = res.locals;
     await service.delete(review.review_id);
