@@ -77,8 +77,7 @@ async function update(req, res) {
 
 // Delete review stored in locals //
 async function destroy(req, res) {
-    const { review } = res.locals;
-    await service.delete(review.review_id);
+    await service.delete(res.locals.review.review_id);
     res.sendStatus(204);
 }
 
