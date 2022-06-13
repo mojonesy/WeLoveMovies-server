@@ -31,8 +31,11 @@ async function reviewsByMovie(req, res) {
 
 // List movies where 'is_showing=true' //
 async function list(req, res) {
-    if(req.query.is_showing === 'true') {
+    if (req.query.is_showing === 'true') {
       const data = await service.moviesShowing();
+      res.json({ data });
+    } else if (req.query.is_showing === 'false') {
+      const data = await service.moviesNotShowing();
       res.json({ data });
     }
     const data = await service.list();
